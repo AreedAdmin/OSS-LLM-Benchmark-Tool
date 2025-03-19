@@ -1,0 +1,2 @@
+# This project requires Python 3.7 or later.
+# No external packages are required.
