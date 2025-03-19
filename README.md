@@ -1,5 +1,3 @@
-Below is an example `README.md` file tailored for your script:
-
 ```markdown
 # Ollama Benchmark
 
