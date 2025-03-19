@@ -1,3 +1,4 @@
+
 import subprocess
 import time
 import argparse
@@ -81,11 +82,11 @@ def run_benchmark(model, prompt, iterations):
     return summary
 
 def log_benchmark_data(prompt_id, summary, csv_filename="raw_data.csv"):
-    # If the file does not exist, write the header.
+    # Include the prompt in the field names and row.
     file_exists = os.path.isfile(csv_filename)
     with open(csv_filename, mode="a", newline="", encoding="utf-8") as csvfile:
         fieldnames = [
-            "prompt_id", "model_name", "iteration_no", "average_token_count",
+            "prompt_id", "prompt", "model_name", "iteration_no", "average_token_count",
             "min_max_token_variance_%", "average_tps", "average_inference_time", "sample_output"
         ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -114,9 +115,10 @@ def main():
     # Split models by comma and strip any whitespace
     model_list = [m.strip() for m in args.models.split(",")]
 
-    # For each model, run benchmark and log the summary data
+    # For each model, run benchmark, add the prompt to summary, and log the summary data
     for model in model_list:
         summary = run_benchmark(model, args.prompt, args.iterations)
+        summary["prompt"] = args.prompt  # Add prompt column
         log_benchmark_data(prompt_id, summary)
 
 if __name__ == "__main__":
