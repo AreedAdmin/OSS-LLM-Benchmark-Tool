@@ -1,0 +1,2 @@
+prompt_id,model_name,iteration_no,average_token_count,min_max_token_variance_%,average_tps,average_inference_time,sample_output
+6cd8db9b-621c-4420-b55c-badf9e798bbe,deepseek-r1:1.5b,10,52.5,87.65432098765432,57.69809954765359,0.909908652305603,<think>  </think>  It seems like your question got cut off. Could you clarify or provide more context about what you're asking? I'm here to help!
