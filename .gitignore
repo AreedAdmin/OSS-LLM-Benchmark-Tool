@@ -99,4 +99,4 @@ env.bak/
 *.swp
 
 # Data files
-raw_data.csv
+*.csv
