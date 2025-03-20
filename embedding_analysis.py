@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 embedding_analysis.py
 
@@ -13,13 +12,11 @@ It:
   
 All visualizations are saved in a folder called "ea_viz".
 """
-
 import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import sentence_trans
 from sentence_transformers import SentenceTransformer
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
@@ -107,7 +104,6 @@ def main():
     plt.savefig(tsne_viz_path, dpi=150)
     plt.show()
     print(f"Saved t-SNE visualization to {tsne_viz_path}")
-
 
     # 5. Compute and visualize cosine similarity across all embeddings
     cos_sim = cosine_similarity(embeddings)
