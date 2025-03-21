@@ -1,0 +1,25 @@
+MODEL PERFORMANCE SUMMARY
+=======================
+
+Total samples analyzed: 74
+Average accuracy across all models: 39.44%
+Average inference time: 30.99 seconds
+
+PERFORMANCE BY MODEL
+-----------------
+deepseek-r1:8b: 100.00% accuracy (10.0 samples)
+qwen2.5:7b: 100.00% accuracy (3.0 samples)
+deepseek-r1:7b: 50.00% accuracy (10.0 samples)
+deepseek-r1:1.5b: 27.27% accuracy (11.0 samples)
+llama3.1: 23.08% accuracy (13.0 samples)
+qwen2.5:1.5b: 20.00% accuracy (5.0 samples)
+llama3.2: 18.18% accuracy (11.0 samples)
+qwen2.5:3b: 12.50% accuracy (8.0 samples)
+
+PERFORMANCE BY PROMPT TYPE
+-----------------------
+Zero-Shot: 52.94% accuracy (17.0 samples)
+Role Based: 43.33% accuracy (30.0 samples)
+COT: 31.25% accuracy (16.0 samples)
+Zero Shot: 25.00% accuracy (4.0 samples)
+ Zero-Shot: 0.00% accuracy (2.0 samples)

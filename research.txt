@@ -1,0 +1,125 @@
+This is our current research paper, impove this.
+
+Prompt Engineering: An end-to-end machine learning approach to prompt engineering analysis
+
+20121819, 2221909, 24222522, 24082269,24162507
+
+UCL Msc Business Analytics
+MSIN0097: Predictive Analytics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Introduction	1
+Examples and Real Outcomes	1
+Model Comparison Analysis	2
+Data Collection Features and Procedure	2
+Embedding and Similarity	3
+Conclusion and Summary	3
+
+## **1. Introduction and Background**
+
+The present research extends our end-to-end prompt engineering analysis by integrating a multi-dimensional evaluation of model responses and systematically reporting empirical results across multiple quantitative measures. We benchmarked three core question types—string counting (“Strawberry”), prime factorization (“Factorization”), and code generation (“Snakes”)—with each question posed in zero-shot, role-based, and chain-of-thought styles. Using our **OSS-LLM-Benchmark-Tool**, we collected between three to ten runs per question–model–parameter combination, recording average inference time, token usage, token variance, and correctness in a single CSV dataset. Subsequent analysis in the `statistics.ipynb` notebook included correlation matrices, scatter plots, prompt type comparisons, and an embedding-based similarity assessment via cosine distance on transformed outputs.
+
+---
+
+## **2. Task Overview and Data Collection**
+
+### **2.1 Task Categories and Prompting Styles**
+
+Data from the comprehensive logs (e.g., `accuracy_by_prompt_type.csv` and `performance_by_question.csv`) reveal distinct performance patterns for three primary tasks:
+
+1. **Strawberry:** A letter-counting exercise where models report the number of ‘r’s in “strawberry.”  
+2. **Factorization:** A mathematical reasoning task requiring prime factorization (e.g., 9,999 or 999,999,999).  
+3. **Snakes:** A programming scenario in which models generate Python code for a Snake game using Pygame.
+
+For each task, we tested **zero-shot** (no prior examples or role guidance), **role-based** (e.g., “You are a mathematics professor…”), and **chain-of-thought** (CoT) prompts designed to elicit step-by-step reasoning.
+
+### **2.2 Iteration and Logging with the OSS-LLM-Benchmark-Tool**
+
+The OSS-LLM-Benchmark-Tool orchestrated the data collection. Every model–prompt pair was queried 3–10 times, capturing:
+
+- **`prompt_id`**: Unique run identifier.  
+- **`model_name`**: Family and parameter size (e.g., “deepseek-r1:8b,” “qwen2.5:7b”).  
+- **`iteration_no`**: Indexing the repeated trials.  
+- **`average_inference_time`**: Mean response latency.  
+- **`average_token_count`**: Typical output length in tokens.  
+- **`min_max_token_variance_%`**: Dispersion metric across repeated runs.  
+- **`average_tps`**: Tokens per second, reflecting model speed.  
+- **`sample_output`**: Representative snippet of the model’s textual response.  
+- **`isCorrect`**: Binary correctness indicator.  
+- **`prompt_type`**: Zero-shot, role-based, or CoT.  
+- **`base_question`**: Category label (Strawberry, Factorization, or Snakes).
+
+---
+
+## **3. Quantitative Results and Observations**
+
+### **3.1 Accuracy and Inference Time**
+
+Prime factorization tasks, with an overall 42.86% accuracy rate, emerged as more challenging than simpler string manipulation tasks (50% accuracy for “Strawberry”) or code generation tasks (50% accuracy for “Snakes”). Within the Deepseek family, the 8B parameter variant consistently achieved near-perfect or perfect accuracy across nearly all prompt types, a pattern visible in the zero-shot, role-based, and CoT accuracy rates recorded in `accuracy_by_prompt_type.csv`. Smaller Deepseek models, while typically faster, sometimes yielded lower correctness. For instance, “deepseek-r1:7b” attained only 33.33% accuracy in factorization prompts, highlighting the interplay between parameter size and multi-step arithmetic reasoning. Qwen models likewise varied in performance: while “qwen2.5:7b” hit perfect or near-perfect accuracy under role-based or zero-shot settings, smaller Qwen variants (1.5B and 3B) rarely exceeded 50% accuracy except under carefully guided chain-of-thought conditions.
+
+The recorded average inference times in `inference_time_vs_accuracy.csv` illuminate a trade-off between runtime and model success. Large or chain-of-thought-enabled configurations (e.g., Deepseek 8B) exhibited higher mean inference times but superior accuracy. Correlation analysis (in `metric_correlations.csv`) shows a modest relationship (r ≈ 0.23) between inference time and accuracy but a stronger correlation (r ≈ 0.57) between accuracy and embedding similarity, suggesting that higher internal coherence is tied to correct outputs.
+
+### **3.2 Prompt Type Effects**
+
+Zero-shot prompting yielded minimal computational overhead yet compromised correctness for more complex tasks, including prime factorization and multi-file code generation. Role-based prompting closed the gap for arithmetic reasoning and code tasks, often boosting correctness from near 0% to around 50%, especially in smaller models. Chain-of-thought proved the most resource-intensive approach—indicated by elevated average token counts in `token_statistics.csv`—but it also pushed advanced models (e.g., “deepseek-r1:8b”) close to 100% accuracy in both factorization and Snake game tasks. This heightened correctness comes at the cost of longer inference times, thus reflecting an accuracy–latency trade-off that must be considered for production environments.
+
+### **3.3 Embedding-Based Consistency**
+
+The embedding stage provided a nuanced view of each model’s uniformity across repeated trials or prompt variants. Large-parameter LLMs or CoT prompting configurations frequently exhibited higher mean cosine similarity, with “deepseek-r1:8b” and “qwen2.5:7b” often surpassing 0.90 in `embedding_similarity_by_model.csv`. Conversely, smaller models (e.g., “qwen2.5:1.5b”) scattered in embedding space with average similarities around 0.78–0.84, underscoring that a combination of model capacity and sophisticated prompting yields semantically stable outputs.
+
+---
+
+## **4. Model Comparison Analysis**
+
+### **4.1 Parameter Size vs. Accuracy**
+
+The “deepseek-r1:8b” configuration regularly achieved superior correctness, aided by chain-of-thought prompting that proved especially critical for multi-step tasks (e.g., factoring 999,999,999). “qwen2.5:7b” also reached near-perfect accuracy but with slightly longer inference times, whereas smaller parameter sizes, including 1.5B and 3B, produced faster inferences yet higher error rates. In many cases, prompt engineering (especially role-based instructions) could offset the limitations of smaller models partially, but never equaled the consistent 100% accuracy of advanced large-parameter setups.
+
+### **4.2 Code Generation vs. Basic Reasoning**
+
+“Snakes” code tasks exposed how role-based prompts substantially improve structured output, with models systematically detailing game loops, collision detection, and scoreboard logic. Meanwhile, pure lexical tasks like counting letters in “Strawberry” often succeeded under zero-shot prompts, but subtle mistakes still arose among smaller models, reflecting sensitivity to seemingly trivial queries.
+
+### **4.3 Statistical Insights**
+
+Heatmap analyses reveal moderate correlations (r ≈ 0.50) between inference time and embedding similarity, implying that longer or more verbose responses in the same condition converge semantically. Additionally, a strong correlation (r ≈ 0.57) between accuracy and embedding similarity suggests that stable textual representations are also more frequently correct.
+
+---
+
+## **5. Conclusion and Summary**
+
+This multi-faceted study affirms that **prompt engineering** remains pivotal to maximizing large language model performance, particularly in arithmetic, code creation, and even simple lexical checks. The zero-shot approach offers minimal overhead but struggles with complex tasks. Role-based prompts effectively boost correctness without the overhead of chain-of-thought, whereas chain-of-thought prompts offer near-perfect accuracy for larger models at the expense of increased token usage and inference time. Embedding-based evaluations, as well as correlation metrics, underscore how larger parameter counts and step-by-step instructions correlate with semantically coherent outputs and higher correctness rates. 
+
+Future enhancements might emphasize automated code validation for tasks such as Snake game generation, testing models’ real-world reliability, or investigate the scaling behavior of models with parameters beyond 8B to 13B or 30B. Overall, these findings illustrate that **no single approach universally dominates**; the ideal strategy depends on time constraints, computational resources, and the complexity of the question at hand. By leveraging repeated runs, robust metadata logging, and vectorized output analysis, we present a rigorous methodology for quantifying how LLMs across parameter scales respond to divergent prompting styles in real-world reasoning tasks.
